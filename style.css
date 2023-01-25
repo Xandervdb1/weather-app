@@ -1,6 +1,23 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: 'Barlow', sans-serif;
+}
+
+body {
+    background-color: #E3EBF2;
+    color: #2E3743;
+    padding: 1rem;
+    margin: 0 10%;
+    transition: background-color 0.5s ease;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    transition: 0.5s ease;
 }
 
 img {
@@ -8,24 +25,162 @@ img {
     height: max-content;
 }
 
+.weather {
+    display: none;
+}
+
+.location {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.time {
+    font-weight: 300;
+    font-size: 0.9rem;
+}
+
+.weatherinfo img {
+    width: 75px;
+}
+
+.temp {
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+.extra img {
+    width: 25px;
+}
+
+.humidityinfo img {
+    width: 20px;
+}
+
+.forecast img {
+    width: 30px;
+}
+
+.searchinput button {
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.searchinput img {
+    width: 16px;
+    margin-left: 1rem;
+}
+
 .searchinput label {
     display: none;
 }
 
+.searchinput input {
+    padding: 0.5rem;
+    border-radius: 50px;
+    background: linear-gradient(145deg, #ccd4da, #f3fbff);
+    box-shadow:  20px 20px 60px #c1c8ce,
+                 -20px -20px 60px #ffffff;
+    border: none;
+    font-weight: bold;
+    transition: 0.5s ease;
+}
+
+.searchinput input:focus {
+    outline: none;
+}
+
 .searchinput {
     text-align: center;
-    margin: 0 auto;
+    margin: 0 auto 5rem auto;
 }
 
 .weatherinfo {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5rem;
+}
+
+.weatherinfo .type {
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+.weatherinfo .type::first-letter {
+    text-transform: capitalize;
+}
+
+.extra {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.extra section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.extra section div {
+    display: flex;
+    gap: 0.5rem;
     align-items: center;
 }
 
-.windinfo {
+.forecastcontainer {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.forecast {
+    font-weight: 500;
+}
+
+.temps {
+    display: flex;
+    justify-content: space-around;
+    gap: 0.8rem;
+}
+
+.forecastdays {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
+}
+
+.forecastdays img {
+    width: 25px;
+}
+
+.day {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+}
+
+.day img {
+    margin: 0 auto;
+}
+
+.day .tempday {
+    text-align: right;
+}
+
+@media only screen and (min-width: 700px) {
+    body {
+        margin: 0 20%;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    body {
+        margin: 0 35%;
+    }
 }
