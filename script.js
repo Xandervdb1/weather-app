@@ -1,18 +1,19 @@
 import {key} from "./key.js";
-const form = document.querySelector(".searchinput")
+const form = document.querySelector(".searchinput");
 
 const updateCity = async (e) => {
     e.preventDefault();
     form.style.display = "block"
     form.style.height = "100px"
-    const city = e.target[0].value;
+    form.style.margin = "0 auto 5rem auto"
+    document.querySelector("body").style.overflowY = "scroll";
+    let city = e.target[0].value;
     e.target[0].value = ""
     const apilinkCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + key + "&units=metric"
     let dayOrNight;
     await fetch(apilinkCurrent)
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         const currentTime = data.dt;
         const sunset = data.sys.sunset;
         const sunrise = data.sys.sunrise;
@@ -95,7 +96,6 @@ const updateCity = async (e) => {
     await fetch(apilinkForecast)
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         const forecastContainer = document.querySelector(".forecastcontainer");
         while (forecastContainer.lastChild) {
             forecastContainer.removeChild(forecastContainer.lastChild);
@@ -138,10 +138,7 @@ const updateCity = async (e) => {
         for (let interval of data.list) {
             if (currentDate() != convertUnixD(interval.dt)) {
                 let localtime = convertUnixHM(interval.dt, data.city.timezone);
-                console.log(localtime);
                 if (localtime == "12:00" || localtime == "13:00" || localtime == "11:00") {
-                    console.log(interval)
-                    
                     let day = document.createElement("div");
                     day.classList.add("day");
 
@@ -164,10 +161,125 @@ const updateCity = async (e) => {
                 }
             }
         }
+        
+        while(document.querySelector(".tempgraph").lastChild) {
+            document.querySelector(".tempgraph").removeChild(document.querySelector(".tempgraph").lastChild)
+        }
+
+        let ctx = document.createElement("canvas");
+        document.querySelector(".tempgraph").append(ctx);
+        let tempsdataavg = []
+        let tempsdatamax = []
+        let tempsdatamin = []
+        let labels = []
+        let todayDate = convertUnixD(data.list[0].dt);
+        let tempoTemp = []
+        for (let day of data.list) {
+            if (todayDate == convertUnixD(day.dt)) {
+                console.log(todayDate);
+                tempoTemp.push(day.main.temp);
+                console.log(tempoTemp);
+            } else {
+                let avg = avgArray(tempoTemp);
+                let max = maxArray(tempoTemp);
+                let min = minArray(tempoTemp);
+                tempsdataavg.push(avg);
+                tempsdatamax.push(max);
+                tempsdatamin.push(min);
+                labels.push(convertUnixWDM(day.dt));
+                tempoTemp = [];
+                todayDate = convertUnixD(day.dt);
+            }
+        }
+        let bordercolor;
+        let fontcolor;
+        if (dayOrNight == "d") {
+            bordercolor = "#2E3743";
+            fontcolor = "#2E3743";
+        } else {
+            bordercolor = "#E3EBF2";
+            fontcolor = "#E3EBF2";
+        }
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Avg temperature',
+                    data: tempsdataavg,
+                    borderWidth: 1,
+                    tension: 0.4
+                },
+                {
+                    label: 'Max temperature',
+                    data: tempsdatamax,
+                    borderWidth: 1,
+                    tension: 0.4,
+                    borderColor: "#D22B2B"
+                },
+                {
+                    label: 'Min temperature',
+                    data: tempsdatamin,
+                    borderWidth: 1,
+                    tension: 0.4,
+                    borderColor: "#6495ED"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                borderColor: bordercolor,
+                color: fontcolor,
+                elements: {
+                    point: {
+                        pointStyle: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            stepSize: 1,
+                            borderColor: bordercolor,
+                            color: fontcolor,
+                            callback: function(value, index, ticks) {
+                                return value + "°";
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            borderColor: bordercolor,
+                            color: fontcolor,
+                        }
+                    }
+                }
+            }
+        });
     })
 }
 
 form.addEventListener("submit", updateCity);
+
+function avgArray(array){
+    let sum = 0
+    for (let i = 0; i < array.length; i += 1) {
+    sum += array[i]
+    }
+    let avg = sum / array.length;
+    avg = parseFloat(avg.toFixed(2))
+    
+    return avg
+}
+
+function maxArray(array) {
+    let max = Math.max(...array);
+    return max;
+}
+
+function minArray(array) {
+    let min = Math.min(...array);
+    return min;
+}
 
 function currentDate() {
     let date = new Date()
