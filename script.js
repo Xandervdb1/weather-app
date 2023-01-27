@@ -46,11 +46,6 @@ const updateCity = async (e) => {
         const weathericon = document.querySelector(".weatherinfo img")
         weathericon.src = "./assets/" + data.weather[0].icon + dayOrNight + ".png"
         const temp = document.querySelector(".weatherinfo .temp");
-        // if (Math.round(data.main.temp) != Math.round(data.main.feels_like)) {
-        //     temp.innerHTML = Math.round(data.main.temp) + "° (" + Math.round(data.main.feels_like) + "°)";
-        // } else {
-        //     temp.innerHTML = Math.round(data.main.temp) + "°"
-        // }
         temp.innerHTML = Math.round(data.main.temp) + "°"
     
         const type = document.querySelector(".weatherinfo .type");
@@ -100,7 +95,7 @@ const updateCity = async (e) => {
         while (forecastContainer.lastChild) {
             forecastContainer.removeChild(forecastContainer.lastChild);
         }
-        for(let i = 0; i < 3; i++) {
+        for(let i = 0; i < 8; i++) {
             const forecast = document.createElement("div");
             forecast.classList.add("forecast");
 
@@ -176,9 +171,7 @@ const updateCity = async (e) => {
         let tempoTemp = []
         for (let day of data.list) {
             if (todayDate == convertUnixD(day.dt)) {
-                console.log(todayDate);
                 tempoTemp.push(day.main.temp);
-                console.log(tempoTemp);
             } else {
                 let avg = avgArray(tempoTemp);
                 let max = maxArray(tempoTemp);
@@ -215,14 +208,22 @@ const updateCity = async (e) => {
                     data: tempsdatamax,
                     borderWidth: 1,
                     tension: 0.4,
-                    borderColor: "#D22B2B"
+                    borderColor: "#D22B2B",
+                    fill: {
+                        above: "rgb(235, 156, 156, 0.2)",
+                        target: 0,
+                    }
                 },
                 {
                     label: 'Min temperature',
                     data: tempsdatamin,
                     borderWidth: 1,
                     tension: 0.4,
-                    borderColor: "#6495ED"
+                    borderColor: "#6495ED",
+                    fill: {
+                        below: "rgb(100, 149, 237, 0.2)",
+                        target: 0,
+                    }
                 }]
             },
             options: {
@@ -257,6 +258,18 @@ const updateCity = async (e) => {
         });
     })
 }
+
+const forecastContainer = document.querySelector(".forecastcontainer");
+let distanceScrolled = forecastContainer.scrollLeft;
+
+forecastContainer.addEventListener("scroll", (e) => {
+    let newDistanceScrolled = forecastContainer.scrollLeft;
+    if (newDistanceScrolled > distanceScrolled) {
+        forecastContainer.style.boxShadow =  "inset 7px 0 9px -7px rgba(0,0,0,0.7)"; //left
+    } else {
+        forecastContainer.style.boxShadow =  "inset -7px 0 9px -7px rgba(0,0,0,0.7)"; //right
+    }
+})
 
 form.addEventListener("submit", updateCity);
 

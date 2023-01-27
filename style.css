@@ -21,11 +21,6 @@ form {
     transition: 0.5s ease;
 }
 
-img {
-    width: max-content;
-    height: max-content;
-}
-
 .weather {
     display: none;
 }
@@ -43,6 +38,7 @@ img {
 
 .weatherinfo img {
     width: 75px;
+    height: 75px;
 }
 
 .temp {
@@ -52,14 +48,17 @@ img {
 
 .extra img {
     width: 25px;
+    height: 25px;
 }
 
 .humidityinfo img {
     width: 20px;
+    height: 20px;
 }
 
 .forecast img {
     width: 30px;
+    height: 30px;
 }
 
 .searchinput button {
@@ -70,6 +69,7 @@ img {
 
 .searchinput img {
     width: 16px;
+    height: 16px;
     margin-left: 1rem;
 }
 
@@ -135,8 +135,22 @@ img {
 
 .forecastcontainer {
     display: flex;
-    justify-content: space-around;
+    justify-content: baseline;
     text-align: center;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 0.5rem;
+    box-shadow: inset -7px 0 9px -7px rgba(0,0,0,0.7);
+}
+
+::-webkit-scrollbar {
+    background-color: #E3EBF2;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #2E3743;
+    border-radius: 10px;
+    border: 5px solid #E3EBF2;
 }
 
 .forecast {
@@ -159,6 +173,7 @@ img {
 
 .forecastdays img {
     width: 25px;
+    height: 25px;
 }
 
 .day {
@@ -175,12 +190,16 @@ img {
 }
 
 .tempgraph {
-    min-height: 200px;
+    display: none;
 }
 
 @media only screen and (min-width: 700px) {
     body {
         margin: 0 20%;
+    }
+
+    .tempgraph {
+        display: block;
     }
 }
 
