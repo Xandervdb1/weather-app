@@ -140,17 +140,10 @@ form {
     gap: 2rem;
     overflow-x: auto;
     padding: 0.5rem;
-    box-shadow: inset -7px 0 9px -7px rgba(0,0,0,0.7);
 }
 
-::-webkit-scrollbar {
-    background-color: #E3EBF2;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #2E3743;
-    border-radius: 10px;
-    border: 5px solid #E3EBF2;
+.forecastcontainer::-webkit-scrollbar {
+    display: none;
 }
 
 .forecast {

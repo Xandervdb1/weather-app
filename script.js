@@ -95,7 +95,7 @@ const updateCity = async (e) => {
         while (forecastContainer.lastChild) {
             forecastContainer.removeChild(forecastContainer.lastChild);
         }
-        for(let i = 0; i < 8; i++) {
+        for(let i = 0; i < 12; i++) {
             const forecast = document.createElement("div");
             forecast.classList.add("forecast");
 
@@ -125,6 +125,11 @@ const updateCity = async (e) => {
             forecast.append(temps);
             
             forecastContainer.append(forecast);
+        }
+        if (forecastContainer.scrollWidth > forecastContainer.clientWidth) {
+            forecastContainer.style.boxShadow =  "inset -7px 0 9px -7px rgba(0,0,0,0.7)"
+        } else {
+            forecastContainer.style.boxShadow = "none"
         }
         let daycontainer = document.querySelector(".forecastdays");
         while (daycontainer.lastChild) {
@@ -270,6 +275,14 @@ forecastContainer.addEventListener("scroll", (e) => {
         forecastContainer.style.boxShadow =  "inset -7px 0 9px -7px rgba(0,0,0,0.7)"; //right
     }
 })
+
+window.addEventListener("resize", (e) => {
+    if (forecastContainer.scrollWidth > forecastContainer.clientWidth) {
+        forecastContainer.style.boxShadow =  "inset -7px 0 9px -7px rgba(0,0,0,0.7)"
+    } else {
+        forecastContainer.style.boxShadow = "none"
+    }
+});
 
 form.addEventListener("submit", updateCity);
 
